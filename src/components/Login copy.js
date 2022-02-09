@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react'
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -57,15 +57,24 @@ let history = useHistory();
     }
         
 
-    
-
     const login = async (e) => {
 
         e.preventDefault();
        
         
+        //setFormErrors(validate(param))
+        //  console.log(setFormErrors(validate(param)));
+        // console.log(validate(param))
         
-        if(Object.keys(validate(param)).length === 0){
+        // alert("HI")
+        //console.log("Hi")
+        //console.log(formErrors)
+        if(Object.keys(formErrors).length === 0 ){
+            setFormErrors(validate(param))
+            return;
+        }
+        
+        else{
             await axios.post("http://corp-sqldb/mis/api/MLogin/Login", param).then((result)=>{
                 //result = JSON.parse(result);
                // let user = JSON.parse(result)
@@ -79,7 +88,7 @@ let history = useHistory();
               }else{
                  localStorage.setItem("user-info", JSON.stringify(result.data))
                 
-                  history.push("/dashboard")
+                 history.push("/dashboard")
               }
               // console.log(JSON.parse(result.data));
                 //console.log(JSON.parse(result.data).tbldata)
@@ -88,24 +97,22 @@ let history = useHistory();
              })
 
         }
-            
-            
-        
-        else{
-            setFormErrors(validate(param))
-            return;
-        }
-        
 
-//    if(localStorage.getItem("user-info")){
-//     //alert("HI")
-//      let userData1 = JSON.parse(localStorage.getItem("user-info"));
-//      let userData = JSON.parse(userData1);
-//      let user = userData[0].username;
-//      alert(user)
-//     // setUserName(user)
-//     //alert(user)
-//  }
+       
+      
+      // setUser(result.data.reverse())
+                    //   setUser(JSON.parse(result.data).tbldata)
+       
+   }
+ 
+   if(localStorage.getItem("user-info")){
+    //alert("HI")
+     let userData1 = JSON.parse(localStorage.getItem("user-info"));
+     let userData = JSON.parse(userData1);
+     let user = userData[0].username;
+    // setUserName(user)
+    //alert(user)
+ }
 
 
     //  async function login(e){
@@ -162,7 +169,6 @@ let history = useHistory();
     //   // let user1 = JSON.parse(localStorage.getItem("user-info"))
       
     //  }
-}
 
 
    
@@ -232,8 +238,6 @@ onChange = { e => inputChange(e)} />
 <div className="mb-2">
  
 <button className=' btnSubmit' onClick={login}>login</button>
-
-<Link  className="nav-link text-center" to="/ForgotPassword">Forgot Password ?</Link>
 </div>
 </div>
 </div>

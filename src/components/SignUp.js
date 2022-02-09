@@ -13,6 +13,7 @@ const SignUp = () => {
     const [village, setVillage] = useState([]);
   
     const[formErrors, setFormErrors]= useState({});
+    //const[isSubmit, setIsSubmit]= useState(true);
     
     
     
@@ -80,10 +81,14 @@ const SignUp = () => {
         const errors = {};
         const regex = /^\S{1,}@\S{2,}\.\S{2,}$/i;
         var pattern = new RegExp(/^[0-9\b]+$/);
+        // let formIsValid = true;
          
-        if(!values.FirstName){
+        if(!values.FirstName ){
+            
             
             errors.firstname = "First Name is required"
+            //formIsValid = false;
+            
            
             
            
@@ -138,34 +143,51 @@ const SignUp = () => {
 
     const onSubmit =  async (e) =>{
         e.preventDefault();
+
+        if(Object.keys(validate(param)).length === 0){
+            await axios.post("http://corp-sqldb/mis/api/SignupApi", param).then((result)=>{
+             
+                console.log(result.data)
+                  
+                  if(result.data== "Email already exists. <br/>Kindly enter different email."){
+                    //  console.log(result.data)
+                      setFormErrors({email:  "Email already exists."})
+                      
+                  }
+      
+                  else if(result.data== "Contact No already exists. <br/>Kindly enter different Contact No."){
+                     // console.log(result.data)
+                      setFormErrors({contactno:  "Contact No already exists."})
+                      
+                  } else if (result.data = "User created successfully"){
+                     //  console.log(result.data)
+                      setFormErrors({})
+                      alert("User Created Successfully")
+                  };
+                //  console.log(user[0].ReturnValue);        
+                // console.log( JSON.parse(result.data))
+                  })
+
+        }
+        else{
+            setFormErrors(validate(param))
+            return;
+        }
         
         
-  setFormErrors(validate(param));
-  
+   
      
-          
     
-    
-        await axios.post("http://corp-sqldb/mis/api/SignupApi", param).then((result)=>{
-            debugger;
-        alert("Hi")        
-        if(result.data== "Contact No already exists. <br/>Kindly enter different Contact No."){
-            alert("Contact no already exist.")
-        }else{
-            alert("User Created Successfully")
-        };
-        //console.log(user[0].ReturnValue);        
-       // console.log( JSON.parse(result.data))
-        })
+      
         
-       // history.push("/userManagement")
+     //  history.push("/userManagement")
 
     }
 
     useEffect(()=>{
         loadCounty();
         
-    }, [])
+    }, [formErrors])
   
     const loadCounty = async () => {
          await axios.get("http://corp-sqldb/MIS//api/SubmitGrievanceApi/25").then((result)=>{
@@ -250,11 +272,11 @@ const SignUp = () => {
     <div className="col-sm-4">
                 
                 
-    <div className="form-group required mb-3">
+<div className="form-group required mb-3">
       <label className="form-label">Email ID</label>
 
       <div className="input-group ">
-  <span class="input-group-text" id="basic-addon1"><i className='fa fa-envelope'></i></span>
+  <span className="input-group-text" id="basic-addon1"><i className='fa fa-envelope'></i></span>
   <input type="text" 
         className="form-control"  
         name="Email"

@@ -24,6 +24,7 @@ import Dashboard from "./Dashboard";
 import MapViewer from "./MapViewer"
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+import ForgotPassword from "./components/ForgotPassword";
 
 
 
@@ -54,6 +55,7 @@ const App = () => {
       <Route exact path="/Employee" component={Employee} />
       <Route exact path="/Login" component={Login} />
       <Route exact path="/SignUp" component={SignUp} />
+      <Route exact path="/ForgotPassword" component={ForgotPassword} />
 
       <Redirect to="/" />
       
