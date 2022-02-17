@@ -272,7 +272,7 @@ const SignUp = () => {
     <div className="col-sm-4">
                 
                 
-<div className="form-group required mb-3">
+    <div className="form-group required mb-3">
       <label className="form-label">Email ID</label>
 
       <div className="input-group ">

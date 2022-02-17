@@ -33,7 +33,7 @@ const AddUser = () => {
         AdminBoundaryIDs3: "",
         AdminBoundaryIDs4: "",
         ContactNo: "",
-        CreatedBy: "",
+        CreatedBy: "71",
         Email: "",
         FirstName: "",
         HasRequestAccessToProgram: "",
@@ -51,7 +51,7 @@ const AddUser = () => {
 
 
        
-
+       // console.log(program.program)
 
     const inputChange = e => {
 
@@ -188,24 +188,32 @@ const AddUser = () => {
         e.preventDefault();
 
         if(Object.keys(validate(param)).length === 0){
-            await axios.post("http://corp-sqldb/mis/api/SignupApi", param).then((result)=>{
+
+          
+          
+            await axios.post("http://corp-sqldb/MIS/api/UserApi", param).then((result)=>{
+              debugger;
              
                 console.log(result.data)
+                if(result.data== "UserID not available. <br/>Kindly enter different userid"){
+                  setFormErrors({username:  "User ID already exists."})
+                }
                   
-                  if(result.data== "Email already exists. <br/>Kindly enter different email."){
+                  if(result.data== "Email not available. <br/>Kindly enter different email."){
                     //  console.log(result.data)
                       setFormErrors({email:  "Email already exists."})
                       
                   }
       
-                  else if(result.data== "Contact No already exists. <br/>Kindly enter different Contact No."){
+                  else if(result.data== "Contact No not available. <br/>Kindly enter different contact no."){
                      // console.log(result.data)
                       setFormErrors({contactno:  "Contact No already exists."})
                       
-                  } else if (result.data = "User created successfully"){
+                  } else if (result.data == "User created successfully"){
                      //  console.log(result.data)
                       setFormErrors({})
                       alert("User Created Successfully")
+                      history.push("/userManagement")
                   };
                 //  console.log(user[0].ReturnValue);        
                 // console.log( JSON.parse(result.data))
@@ -242,6 +250,9 @@ const AddUser = () => {
             setGDATA(result.data)
            
         setCounty(JSON.parse(result.data).County)
+        setProgram(JSON.parse(result.data).socialprogram);
+
+        // console.log(program)
          })
        // setUser(result.data.reverse())
                      //   setUser(JSON.parse(result.data).tbldata)
@@ -561,9 +572,9 @@ const AddUser = () => {
       <label className="form-label">Prgram ID</label>
      <select  className = "form-select"  name = "ProgramIDs" value={ProgramIDs}  onChange={ e => inputChange(e)} >
          <option value="0">Select Program</option>
-        {
-          clan.map((curElem)=>(
-            <option value={curElem.adminboundary3id}>{curElem.name}</option>
+         {
+          program.map((curElem)=>(
+            <option value={curElem.programid}>{curElem.programname}</option>
             ))
         }
      

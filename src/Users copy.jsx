@@ -80,13 +80,13 @@ debugger;
                             {/* <td>{curElem.serviceprovidertypeid}</td> */}
                             <td>{curElem.Email}</td>
                             <td>{curElem["Service Provider Type"]}</td>
-                            <td>{curElem["Account Information"]}</td>
+                            <td>{curElem["Account Information"]} {curElem.benefitsserviceprovidersid}</td>
                            
 
                   <td>
                   <Link className="btn btn-sm btn-primary mx-1" to={`/viewUsers/${curElem.benefitsserviceprovidersid}`} ><i class="far fa-eye"></i> </Link>
                   <Link className="btn  btn-sm btn-dark mx-1" to={`/users/Edit/${curElem.benefitsserviceprovidersid}` } ><i class="far fa-edit"></i> </Link>
-                  <Link className="btn  btn-sm btn-danger mx-1" to="/userManagement" onClick={() => deleteUser(curElem.benefitsserviceprovidersid)}><i class="far fa-trash"></i> </Link>
+                  <Link className="btn  btn-sm btn-danger mx-1" to="/userManagement" onClick={() => deleteUser(curElem.)}><i class="far fa-trash"></i> </Link>
                   </td>
 
                   </tr>

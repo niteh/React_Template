@@ -8,8 +8,8 @@ const Footer = () => {
         
          
           
- <footer id="footer">
-  <div className="footer-top">
+ <footer id="footer" >
+  <div className="footer-top ">
     <div className="container">
       <div className="row">
 

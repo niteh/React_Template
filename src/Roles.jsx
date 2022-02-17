@@ -2,11 +2,23 @@ import React, {useState, useEffect} from 'react'
 import {  Link } from "react-router-dom";
 import axios from "axios"
 
+
+
+const getLocalRole = () =>{
+    let roleList = localStorage.getItem('allRoles');
+   //console.log(roleList)
+    if(roleList){
+        return JSON.parse(localStorage.getItem('allRoles'))
+    }else{
+        return [];
+    }
+} 
+
 const Roles = () => {
 
     
 
-    const [role, setRole] = useState([]);
+    const [role, setRole] = useState(getLocalRole());
    
  
     const deleteRole = async id =>{
@@ -21,6 +33,10 @@ const Roles = () => {
   if (window.confirm(text) == true) {
   
         await axios.delete(`http://corp-sqldb/MIS//api/RoleApi/${id}|${"71"}` )
+
+        
+
+      //  http://corp-sqldb/MIS/api/UserApi/64|71
   }
 
 
@@ -39,8 +55,9 @@ const Roles = () => {
     
 
     useEffect(()=>{
+        localStorage.setItem("allRoles", JSON.stringify(role))
         loadRoles();
-    }, [])
+    }, [role])
 
     const loadRoles = async () => {
          await axios.get("http://corp-sqldb/MIS/api/MobileRoleapi").then((result)=>{

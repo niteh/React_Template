@@ -7,8 +7,7 @@ const EditRole = () => {
   let history = useHistory();
   const {id} = useParams();
   const [role,setRole] = useState({
-      
-    RoleName: ""
+       RoleName: ""
   })
   const {RoleName} = role;
 
@@ -24,16 +23,20 @@ const EditRole = () => {
        console.log(role)
 
      var axios = require('axios');
- var qs = require('qs');
-var data = qs.stringify({
-  'RoleName': role.name,
-  'RoleId': role.status,
+     var qs = require('qs');
+     var data = qs.stringify({
+  'RoleName': role.RoleName,
+  'RoleId': role.RoleId,
   ModifiedBy: "71",
    'action': 'put' 
  });
  var config = {
    method: 'put',
    url: 'http://corp-sqldb/MIS//api/RoleApi',
+
+   
+
+
    headers: { 
      'Content-Type': 'application/x-www-form-urlencoded'
    },
@@ -42,13 +45,14 @@ var data = qs.stringify({
 
  axios(config)
  .then(function (response) {
+  debugger;
    console.log(JSON.stringify(response.data));
  }) .catch(function (error) {
   console.log(error);
  });
   
       
-     
+      loadRoles();
       history.push("/roleManagement")
 
   }
@@ -56,28 +60,30 @@ var data = qs.stringify({
 
   useEffect(()=>{
      
-    loadUsers();
+    loadRoles();
 }, [])
 
-const loadUsers = async () => {
+const loadRoles = async () => {
 
   //alert( id )
-     await axios.get("http://corp-sqldb/MIS//api/RoleApi").then(response => {
+     await axios.get("http://corp-sqldb/MIS/api/MobileRoleapi").then(response => {
+      
              debugger;
-             
+             console.log(JSON.parse(response.data).refcurtbl.roleid)
              
              //console.log((response.data).tbldata)
-             JSON.parse(response.data).Roles.filter((res)=>{
+             JSON.parse(response.data).refcurtbl.filter((res)=>{
+
+              console.log(res)
+
                if(res.roleid  == id){
                  console.log(res)
                  debugger;
 
                 setRole({
-                  
-                  
-                  RoleId : res.RoleId,
+                  RoleId : res.roleid,
                   action: 'put',
-                  RoleName:res.RoleName,
+                  RoleName:res.rolename,
                   ModifiedBy: "71"
                   })
                  //setUser(JSON.parse(res))
@@ -96,8 +102,11 @@ const loadUsers = async () => {
     return (
         <>
         <div className="container-fluid">
-        <Link to="/roleManagement" className="btn btn-primary mb-2 mt-2 pull-right"> Back to User List</Link>
-            <h1>Update Role</h1>
+        <Link to="/roleManagement" className="btn btn-primary mb-2 mt-2 float-end"> Back to Role List </Link>
+                <h1>Edit Role</h1>
+
+          <hr />
+ 
 
             <form onSubmit={e => onSubmit(e)}>
               <div className="row">

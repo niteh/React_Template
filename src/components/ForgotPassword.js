@@ -17,12 +17,12 @@ let history = useHistory();
 //     {!result1 ? alert("no") : alert({getUser})}
     
     const [param, setParam] = useState({
-        UserID: ""
+        UserName: ""
     })
     const[formErrors, setFormErrors]= useState({});
    
     
-    const {UserID} = param;
+    const {UserName} = param;
     const inputChange = e => {
         
         setParam({...param,[e.target.name]: e.target.value})
@@ -41,10 +41,10 @@ let history = useHistory();
         // let formIsValid = true;
          
       
-        if(!values.UserID ){
+        if(!values.UserName ){
             
             
-            errors.userID = "User ID is required"
+            errors.userName = "User ID is required"
             //formIsValid = false;
             
            
@@ -66,21 +66,20 @@ let history = useHistory();
         
         
         if(Object.keys(validate(param)).length === 0){
-            await axios.post("http://corp-sqldb/mis/ForgotPassword/GetForgotPassword", param).then((result)=>{
+            await axios.post("http://corp-sqldb/MIS/api/MobileManageUserApi", param).then((result)=>{
                 //result = JSON.parse(result);
                // let user = JSON.parse(result)
-              
-               debugger;
-               let user = JSON.parse(result.data);
-              console.log(user[0].ReturnValue);
-              if(user[0].ReturnValue === "Username/Password is Incorrect."){
-                // alert(user[0].ReturnValue)
-                 setFormErrors({username:  "Username is incorrect", password:"Password is incorrect"})
+
+
+              if(result.data !== "Invalid details."){
+                setFormErrors({})
+                  alert("Passowod sent on your registered mail id")
+                  history.push("/login")
               }else{
-                 localStorage.setItem("user-info", JSON.stringify(result.data))
-                
-                 history.push("/dashboard")
+                setFormErrors({userName:  "Username is invalid "})
               }
+               debugger;
+            
               // console.log(JSON.parse(result.data));
                 //console.log(JSON.parse(result.data).tbldata)
              }).catch(err => {
@@ -127,15 +126,15 @@ let history = useHistory();
   <span className="input-group-text" id="basic-addon1"><i className='fa fa-user'></i></span>
   <input type="text" 
         className="form-control"  
-        name="UserID"
+        name="UserName"
         placeholder="Enter User ID"
-        value={UserID} 
+        value={UserName} 
        
         onChange = { e => inputChange(e)} />
 </div>
      
         <small id="emailHelp"
-     className="form-text text-danger ">{formErrors.userID}</small>
+     className="form-text text-danger ">{formErrors.userName}</small>
     </div>
 
      
